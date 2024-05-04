@@ -47,4 +47,27 @@ Now your device is set and ready to go 🚀
 
 ### Session creation and playing 
 
-![Create Session](https://github.com/DRM-Mina/.github/assets/67785258/afe8e81f-e8ad-4b7d-a9c4-2af026c306b2)
+How is ownership verified when players enter the game they downloaded? DRM Mina uses its own DRM protection to solve this in the most player-friendly, flexible and secure way possible. The verification process consists of 3 main parts: 
+```
+App-chain
+Game and its verification scripts
+Local Nodejs host for generating zk-proofs and Mina txs 
+```
+![Create Session](https://github.com/DRM-Mina/.github/assets/67785258/86d1549d-bd02-486b-9694-3aeb37b94399)
+
+
+When the user first opens the game, the game verifier takes the device's information in the background and runs some checks first, then it sends a query to the app-chain sequencer to get and check the current session information on the chain. If the game is enabled, it selects a random value that is different from the current one and sends the necessary information to the Nodejs host (which runs beside the game) and asks it to update the state and continuously checks the on-chain state for a certain period of time.
+
+### Session Proof Generation and Submission
+
+As public input when generating session proof it takes:
+```
+gameId
+currentSessionKey
+newSessionKey
+```
+In addition to these, it also receives the information that we do not want to leave the user's computer but at the same time we need to make sure that it is generated from the correct device as private input. After providing the necessary checks, it gives `gameId, newSessionKey, hash` as public output. In this way, both confidential information is prevented from leaving the computer and fraud attempts or double usage of proofs that can be made while updating the session state are prevented.
+
+![Device Session Proof](https://github.com/DRM-Mina/.github/assets/67785258/6965b892-35b1-4641-89aa-6c36a2c2d475)
+
+The user's wallet is not needed to send this transaction. The host can send the transaction to the sequencer from the random temporary wallet it created. The sent tx changes the state if it contains a valid proof. If the in-game validator validates it within the specified time, the player can play the game without generating a new session during the `timeoutInterval` but if not, the player is logged out from game. 
