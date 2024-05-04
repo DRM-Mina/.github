@@ -8,9 +8,12 @@ DRM Mina is a game marketplace that connects game creators and players on Mina. 
 #### Buying game from market and registering device to play
 
 DRM Mina app-chain contains 3 main modules that:
-`Balances` control user balance (in Mina) to buy games.
-`GameToken` allow creators to publish their games, customize them and controls the sales of games.
-`DRM` keep device information (their hash of course just for verify proofs) of users that have bought game, and their device's last session informations. 
+
+`Balances`: control user balance (in Mina) to buy games.
+
+`GameToken`: allow creators to publish their games, customize them and controls the sales of games.
+
+`DRM`: keep device information (their hash of course just for verify proofs) of users that have bought game, and their device's last session informations. 
 
 ![Buy and register game](https://github.com/DRM-Mina/.github/assets/67785258/295aff03-8463-45b2-a7b3-ae10ab874626)
 
